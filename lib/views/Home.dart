@@ -56,6 +56,38 @@ class HomePage extends HookWidget {
     //   }
     // };
 
+    Widget tinder = new TinderSwapCard(
+              swipeUp: false,
+              swipeDown: false,
+              orientation: AmassOrientation.BOTTOM,
+              totalNum: size.value,
+              stackNum: 3,
+              swipeEdge: 4.0,
+              maxWidth: MediaQuery.of(context).size.width,
+              maxHeight: MediaQuery.of(context).size.height * 0.7,
+              minWidth: MediaQuery.of(context).size.width * 0.8,
+              minHeight: MediaQuery.of(context).size.height * 0.65,
+              cardBuilder: (context, index) => new MealCard(meals.value.elementAt(index % 10)),
+              cardController: controller = controller,
+              swipeUpdateCallback: (DragUpdateDetails details, Alignment align) {
+                // if (align.x != 0) {
+                //   checkRefresh();
+                // }
+                if (align.x < 0) { //left
+                
+                } else if (align.x > 0) { //right
+                
+                }
+              },
+              swipeCompleteCallback:
+                (CardSwipeOrientation orientation, int index) {
+                  if (orientation.index == meals.value.length) {
+                    size.value += 1;
+                  }
+                  /// Get orientation & index of swiped card!
+                },
+          );
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Logo(),
@@ -103,38 +135,7 @@ class HomePage extends HookWidget {
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.03),
           height: MediaQuery.of(context).size.height * 1,
           child: loading.value ? 
-            new CircularProgressIndicator()
-          : new TinderSwapCard(
-            swipeUp: false,
-            swipeDown: false,
-            orientation: AmassOrientation.BOTTOM,
-            totalNum: size.value,
-            stackNum: 3,
-            swipeEdge: 4.0,
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height * 0.7,
-            minWidth: MediaQuery.of(context).size.width * 0.8,
-            minHeight: MediaQuery.of(context).size.height * 0.65,
-            cardBuilder: (context, index) => new MealCard(meals.value.elementAt(index % 10)),
-            cardController: controller = controller,
-            swipeUpdateCallback: (DragUpdateDetails details, Alignment align) {
-              // if (align.x != 0) {
-              //   checkRefresh();
-              // }
-              if (align.x < 0) { //left
-              
-              } else if (align.x > 0) { //right
-              
-              }
-            },
-            swipeCompleteCallback:
-              (CardSwipeOrientation orientation, int index) {
-                if (orientation.index == meals.value.length) {
-                  size.value += 1;
-                }
-                /// Get orientation & index of swiped card!
-              },
-          ),
+            new CircularProgressIndicator() : tinder
         ),
       );
   }
