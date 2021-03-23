@@ -1,5 +1,5 @@
 import 'package:HUNGER/components/Colors.dart';
-import 'package:HUNGER/models/User.dart';
+import 'package:HUNGER/models/UserModel.dart';
 import 'package:auth_buttons/res/buttons/google_auth_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +11,10 @@ import 'package:provider/provider.dart';
 
 class Login extends HookWidget {
   Future<void> signInWithGoogle(BuildContext context, UserModel user) async {
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    user.firstSignIn(googleAuth);
+    FirebaseAuth.instance.signInWithPhoneNumber("3173790645");
+    // final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    // final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    // user.firstSignIn(googleAuth);
   }
 
   @override

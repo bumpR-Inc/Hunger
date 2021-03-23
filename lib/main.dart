@@ -1,12 +1,13 @@
 import 'package:HUNGER/components/Webview.dart';
-import 'package:HUNGER/models/User.dart';
+import 'package:HUNGER/models/UserModel.dart';
 import 'package:HUNGER/util/firestore.dart';
 import 'package:HUNGER/util/storage.dart';
+import 'package:HUNGER/views/Home.dart';
 import 'package:HUNGER/views/ProfilePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:HUNGER/views/Home.dart';
+import 'package:HUNGER/old/OldHome.dart';
 import 'package:HUNGER/views/Login.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:localstorage/localstorage.dart';
@@ -22,7 +23,7 @@ void main() async {
   await Storage.initialize();
 
   UserModel user = new UserModel();
-  await user.recover();
+  // await user.recover();
   FirestoreHelper.initialize();
 
   DocumentSnapshot config = await FirestoreHelper.firestore.collection('docs').doc("config").get();
@@ -52,7 +53,7 @@ class MyApp extends HookWidget {
         primarySwatch: Colors.orange,
       ),
       home: webview == "" ? 
-        (Provider.of<UserModel>(context).credential != null ? HomePage() : Login()) :
+        (Provider.of<UserModel>(context).credential != 'dick' ? HomeAsync() : Login()) :
         MyWebview(webview)
         ,
       routes: {
