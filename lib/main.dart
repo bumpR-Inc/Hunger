@@ -1,7 +1,10 @@
+import 'package:HUNGER/components/Map.dart';
 import 'package:HUNGER/components/Webview.dart';
 import 'package:HUNGER/models/UserModel.dart';
 import 'package:HUNGER/util/firestore.dart';
 import 'package:HUNGER/util/storage.dart';
+import 'package:HUNGER/views/Cart.dart';
+import 'package:HUNGER/views/Chat.dart';
 import 'package:HUNGER/views/Home.dart';
 import 'package:HUNGER/views/ProfilePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,7 +26,7 @@ void main() async {
   await Storage.initialize();
 
   UserModel user = new UserModel();
-  // await user.recover();
+  await user.recover();
   FirestoreHelper.initialize();
 
   DocumentSnapshot config = await FirestoreHelper.firestore.collection('docs').doc("config").get();
@@ -53,12 +56,15 @@ class MyApp extends HookWidget {
         primarySwatch: Colors.orange,
       ),
       home: webview == "" ? 
-        (Provider.of<UserModel>(context).credential != 'dick' ? HomeAsync() : Login()) :
+        (Provider.of<UserModel>(context).credential != null ? HomeAsync() : Login()) :
         MyWebview(webview)
         ,
+      // home: MapSample(),
+      // home: WelcomeScreen(),
       routes: {
         // '/': (context) => new Container(child: new Text('hi')),
         '/profile': (context) => ProfilePage(),
+        '/cart': (context) => CartPage(),
       },
     );
   }

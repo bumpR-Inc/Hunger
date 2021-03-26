@@ -11,10 +11,10 @@ import 'package:provider/provider.dart';
 
 class Login extends HookWidget {
   Future<void> signInWithGoogle(BuildContext context, UserModel user) async {
-    FirebaseAuth.instance.signInWithPhoneNumber("3173790645");
-    // final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-    // final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    // user.firstSignIn(googleAuth);
+    // FirebaseAuth.instance.signInWithPhoneNumber("3173790645");
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    user.firstSignIn(googleAuth);
   }
 
   @override

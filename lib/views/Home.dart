@@ -12,6 +12,7 @@ import 'package:HUNGER/util/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeAsync extends StatefulWidget {
   @override
@@ -84,7 +85,9 @@ class _HomeAsyncState extends State<HomeAsync>
                   Gap(5),
                   new Text(
                     "2216 Channing Way, Berkeley CA, 94704",
-                    style: TextStyle(color: MyColors.orange, fontSize: 15),
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(color: MyColors.orange, fontSize: 15, fontWeight: FontWeight.w400),
+                    )
                   )
                 ],
               )
@@ -136,13 +139,13 @@ class _HomeAsyncState extends State<HomeAsync>
       }
     } else {
       raw = await FirestoreHelper.firestore.collection('meals').limit(1).startAfterDocument(lastSnapshot).get();
-      print(raw.docs.first.data());
+      // print(raw.docs.first.data());
       if (raw.docs.length == 0) {
         raw = await FirestoreHelper.firestore.collection('meals').limit(1).get();
       }
 
       lastSnapshot = raw.docs.first;
-      print(lastSnapshot.id);
+      // print(lastSnapshot.id);
       MealModel model = MealModel.fromSnapshot(lastSnapshot);
       meals[this.dataIndex] = model;
       // meals.remove(this.dataIndex-this.numInitialData-1);
@@ -153,7 +156,7 @@ class _HomeAsyncState extends State<HomeAsync>
   }
 
   Widget _Stack(BuildContext context, Map<int, MealModel> meals) {
-    print(meals);
+    // print(meals);
     return new Container(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.03),
       child: TinderSwapCard(
@@ -168,7 +171,7 @@ class _HomeAsyncState extends State<HomeAsync>
         minWidth: MediaQuery.of(context).size.width * 0.8,
         minHeight: MediaQuery.of(context).size.height * 0.65,
         cardBuilder: (context, offset) {
-          print(this.index + offset);
+          // print(this.index + offset);
           // print(this.dataIndex - this.numInitialData);
           // print(meals[this.dataIndex - this.numInitialData]);
           return new MealCard(meals[this.index + offset]);
@@ -186,7 +189,12 @@ class _HomeAsyncState extends State<HomeAsync>
           _addToStream();
           this.index++;
 
-          meals[this.index + offset].registerSwipe(orientation == CardSwipeOrientation.RIGHT, context);
+          bool ordering = orientation == CardSwipeOrientation.RIGHT;
+          meals[this.index + offset].registerSwipe(ordering, context);
+
+          if (ordering) {
+            Navigator.pushNamed(context, '/cart');
+          }
           /// Get orientation & index of swiped card!
         },
       )
